@@ -1,12 +1,12 @@
 Order of fields in the list for index based addressing
 
 0 - Flight Number
-1 - Name
-2 - Model Name
-3 - IATA Code
-4 - Departure Airport
-5 - Arrival Airport
-6 - Direction Marker (1 - for arrival, 2 - departure)
+1 - Direction Marker(1 - for arrival, 2 - departue)
+2 - Name
+3 - Model Name
+4 - IATA Code
+5 - Departure Airport
+6 - Arrival Airport
 7 - Origin Date
 8 - Scheduled date and time(arrival)
 9 - Terminal (arrival)
