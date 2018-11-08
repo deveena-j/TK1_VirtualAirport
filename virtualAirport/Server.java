@@ -1,21 +1,25 @@
+package virtualAirport;
+
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.io.*;
+import virtualAirport.ObjectInterfaceServer;
+import virtualAirport.ObjectInterfaceClient;
 
 
-public class Server extends UnicastRemoteObject implements ObjectInterface, Serializable {
+
+public class Server implements ObjectInterfaceServer, Serializable {
 	
 	//ArrayList for constructor initilization
 	private ArrayList<String> flightlist;
-	private String stringreturn;
-	private ArrayList<String> userlist;
+	public String stringreturn;
+	public Vector clientList = new Vector();
 	
 	//mandatory serilization ID
 	private static final long serialVersionUID = 1L;
-	
 	
 	protected Server(ArrayList<String> list) throws RemoteException {
 		super();
@@ -24,10 +28,26 @@ public class Server extends UnicastRemoteObject implements ObjectInterface, Seri
 		//now flightlist will contain the first two dummy flights
 	}
 
-public ArrayList<String> flightDetails() {
-	//this function returns a list of all flights
+public void flightDetails() throws RemoteException{
+	/*this function returns a list of all flights
+	 * called each time a new flight is added
+	 * or deleted
+	 * or updated
+	 * This will in turn perform a callback to the method running
+	 * on the client VM called receiveUpdatedFlightList
+	 */
+	
+	for(int i=0; i<clientList.size(); i++) {
+		try {
+		ObjectInterfaceClient listclient = (ObjectInterfaceClient)clientList.elementAt(i);
+		listclient.receiveUpdatedFlightList(flightlist);
+		}catch (RemoteException ex) {
+			/*removing the client from the vector list on disconnect*/
+			clientList.removeElement(clientList.elementAt(i));
+			System.out.println("Client disconnected");
+		}
+		}
 
-	return flightlist;
 	}
 
 public static ArrayList<String> initializeFlights() {
@@ -44,7 +64,7 @@ public static ArrayList<String> initializeFlights() {
 			return(flightDetail);
 }
 
-public String deleteFlight(String flnum) throws RemoteException {
+public void deleteFlight(String flnum) throws RemoteException {
 	//this method deletes the flight requested by the client
 	//takes as input Flight Number
 	String[] values;
@@ -60,12 +80,12 @@ public String deleteFlight(String flnum) throws RemoteException {
 		
 	}
 	
-	//return status of delete
-	return(stringreturn);
+	//distribute updated flightlist to the clients
+	flightDetails();
 	
 }
 
-public String updateFlight(ArrayList<String> changes, String flightnum) throws RemoteException {
+public void updateFlight(ArrayList<String> changes, String flightnum) throws RemoteException {
 	//takes as input a list of changes. Each change is a string consisting of three values.
 	//separated by a semi-colon. First value - Flight code. Second value - updated field value
 	//Third value is the position of the field in the string
@@ -94,46 +114,82 @@ public String updateFlight(ArrayList<String> changes, String flightnum) throws R
 				
 			}
 		}
-	return stringreturn;
+	
+	/*distribute updated flight list to all clients*/
+	flightDetails();
 	
 	}
 
 
-public String addFlight(String flightdetail) throws RemoteException {
+public void addFlight(String flightdetail) throws RemoteException {
 	//this method enables user to add flight with details. Accepts String as input
 	flightlist.add(flightdetail);
 	stringreturn = "Flight added successfully";
-	return stringreturn;
-}
-
-
-public void login(String uname) throws RemoteException {
 	
-	userlist.add(uname);
+	/*distribute updated flight list to all clients
+	 */
+	flightDetails();
 }
 
 
-public void logout(String uname) throws RemoteException {
+@SuppressWarnings("unchecked")
+public void login(ObjectInterfaceClient loginobject) throws RemoteException {
 	
-	userlist.remove(uname);
+	String response1 = "";
+	/*If client list doesn't contain current logged in client
+	 * then add to the vector list
+	 */
+	if (!(clientList.contains(loginobject))) {
+		clientList.addElement(loginobject);
+		System.out.println("Added client to the list");
+	}
+	//iterating through the client list (now just to test the distributed nature
+	for(int i=0; i<clientList.size(); i++) {
+		try {
+	ObjectInterfaceClient workclient = (ObjectInterfaceClient)clientList.elementAt(i);
+	response1 = "Callback for " + i + "th CLIENT";
+	workclient.testDistribute(response1);
+		}catch (RemoteException ex) {
+			/*removing the client from the vecotr list on disconnect*/
+			clientList.removeElement(clientList.elementAt(i));
+			System.out.println("Client disconnected");
+		}
+	}
+}
+
+public void logout(ObjectInterfaceClient logoutobejct) throws RemoteException {
+	
+	/*this method removes a particular client from the
+	 * client vector list
+	 */
+	clientList.removeElement(logoutobejct);
+	
 }
 
 
-public static void main(String args[]) {
+public static void main(String args[]) throws RemoteException, NotBoundException{
 	
 	    try{
 	    
-	   Naming.rebind("FlightInterface", new Server(initializeFlights()));
-		} catch(Exception e) {
+	   //Naming.rebind("//localhost/FlightInterface", new Server(initializeFlights()));
+	    	Server obj = new Server(initializeFlights());
+            ObjectInterfaceServer stub = (ObjectInterfaceServer) UnicastRemoteObject.exportObject(obj, 0);
+            
+            Registry registry = LocateRegistry.getRegistry();
+            registry.bind("ObjectInterfaceServer", stub);
+            System.out.println("Bound");
+            
+	    } catch(Exception e) {
 			System.err.println("System Exception :" + e.toString());
 			e.printStackTrace();
 		}
 		
-		
 	
+
+	
+
+
+
+
 }
-
-
-
-
 }
