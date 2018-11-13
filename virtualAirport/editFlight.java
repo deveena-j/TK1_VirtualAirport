@@ -79,6 +79,7 @@ public class editFlight extends JFrame {
 	String CheckInEnd = "";
 	String FlightStatusVar = "";
 	
+	
 
 	/**
 	public static void main(String[] args) {
@@ -118,11 +119,20 @@ public class editFlight extends JFrame {
 			    DepartureAirport = valuelist[5];
 			    OriginDate = valuelist[7];
 			    ArrivalAirport = valuelist[6];
+			    OperatingAirlines = valuelist[3];
 			    //ScheduledDeparture = 
 			    ScheduledArrival = valuelist[8];
 			    ArrivalTerminal = valuelist[9];
 			    Arrivalgate = valuelist[10];
 			    EstimatedArrival = valuelist[11];
+			    ScheduledDeparture = valuelist[12];
+			    DepartureTerminal = valuelist[13];
+			    DepartureGates = valuelist[14];
+			    EstimatedDeparture = valuelist[15];
+			    CheckInLocation = valuelist[16];
+			    CheckInCounter = valuelist[17];
+			    CheckInStart = valuelist[18];
+			    CheckInEnd = valuelist[19];
 			    
 			    
 			    
@@ -147,7 +157,7 @@ public class editFlight extends JFrame {
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setText(ModelName);
+		textField_1.setText(DepartureAirport);
 		
 		JLabel lblNewLabel_2 = new JLabel("Flight Number");
 		
@@ -169,7 +179,7 @@ public class editFlight extends JFrame {
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		textField_2.setText(FlightNumber);
+		textField_2.setText(OperatingAirlines);
 		
 		JLabel lblCheckInCounter = new JLabel("Check In Counter");
 		
@@ -189,36 +199,43 @@ public class editFlight extends JFrame {
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		textField_3.setText(DepartureAirport);
+		textField_3.setText(OriginDate);
 		
 		textField_5 = new JTextField();
 		textField_5.setColumns(10);
-		textField_5.setText(OriginDate);
+		textField_5.setText(ScheduledDeparture);
 		
 		textField_6 = new JTextField();
 		textField_6.setColumns(10);
-		textField_6.setEditable(false);
+		textField_6.setText(ModelName);
 		
 		textField_7 = new JTextField();
 		textField_7.setColumns(10);
+		textField_7.setText(FlightNumber);
 		
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
+		textField_4.setText(DepartureTerminal);
 		
 		textField_8 = new JTextField();
 		textField_8.setColumns(10);
+		textField_8.setText(DepartureGates);
 		
 		textField_9 = new JTextField();
 		textField_9.setColumns(10);
+		textField_9.setText(EstimatedDeparture);
 		
 		textField_10 = new JTextField();
 		textField_10.setColumns(10);
+		textField_10.setText(CheckInLocation);
 		
 		textField_11 = new JTextField();
 		textField_11.setColumns(10);
+		textField_11.setText(CheckInCounter);
 		
 		textField_12 = new JTextField();
 		textField_12.setColumns(10);
+		textField_12.setText(CheckInStart);
 		
 		textField_13 = new JTextField();
 		textField_13.setColumns(10);
@@ -242,6 +259,7 @@ public class editFlight extends JFrame {
 		
 		textField_18 = new JTextField();
 		textField_18.setColumns(10);
+		textField_18.setText(CheckInEnd);
 		
 		
 		
@@ -255,6 +273,9 @@ public class editFlight extends JFrame {
 		comboBox.addItem("X");
 		comboBox.addItem("Y");
 		comboBox.addItem("Z");
+		
+		//for flight status
+		String comboinput = comboBox.getEditor().getItem().toString();
 		
 		lblFlightStatus = new JLabel("Flight Status");
 		lblFlightStatus.setBackground(new Color(204, 204, 204));
@@ -270,21 +291,21 @@ public class editFlight extends JFrame {
 				
 				/*creating string to add to flightlist*/
 				//flight number
-				values = values + textField_2.getText() +";";
+				values = values + textField_7.getText() +";";
 				//direction marker (HAVE TO MAKE DYNAMIC
 				values = values + "1;";
-				//Operator
-				values = values + "Lufthansa;";
-				//Model name
-				values = values + textField_1.getText() + ";";
 				//IATA code
 				values = values + textField.getText() + ";";
+				//Operator
+				values = values + textField_2.getText() + ";";
+				//Model name
+				values = values + textField_6.getText() + ";";
 				//departure airport
-				values = values + textField_3.getText() + ";";
+				values = values + textField_1.getText() + ";";
 				//arrival airport
 				values = values + textField_13.getText() + ";";
 				//origin date
-				values = values + textField_4.getText();
+				values = values + textField_3.getText() + ";";
 				//scheduled arrival
 				values = values + textField_14.getText() + ";";
 				//arrival terminal
@@ -292,7 +313,26 @@ public class editFlight extends JFrame {
 				//arrival gate
 				values = values + textField_16.getText() + ";";
 				//estimated arrival
-				values = values + textField_17.getText();
+				values = values + textField_17.getText() + ";";
+				//scheduled departure
+				values = values + textField_14.getText() + ";";	
+				//departure terminal
+				values = values + textField_5.getText() + ";";
+				//departure gate
+				values = values + textField_18.getText() + ";";
+				//estimated departure
+				values = values + textField_9.getText() + ";";
+				//check in location
+				values = values + textField_10.getText() + ";";
+				//check in counter
+				values = values + textField_11.getText() + ";";
+				//check in start
+				values = values + textField_12.getText() + ";";
+				//check in end
+				values = values + textField_18.getText() + ";";
+				//fight status
+				values = values + comboinput;
+				
 				
 				
 				//calling the add flight function

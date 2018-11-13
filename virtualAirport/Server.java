@@ -65,9 +65,9 @@ public static ArrayList<String> initializeFlights() {
 			//List to store flight info. Flight details stored as semi-colon delimited line
 			ArrayList<String> flightDetail = new ArrayList<String>();
 			//entry number 1 (arrival)
-			flightDetail.add(0, "LH591;1;LH;Lufthansa;A380;FRA;TK;2018-10-30;2018-10-30T01:00:00Z;T1;5;2018-10-30T02:00:00Z;X");
+			flightDetail.add(0, "LH591;1;LH;Lufthansa;A380;FRA;TK;2018-10-30;2018-10-30T01:00:00Z;T1;5;2018-10-30T02:00:00Z;2018-10-30T02:00:00Z;T2;5;2018-10-30T02:00:00Z;T1;3;2018-10-30T02:00:00Z;2018-10-30T02:00:00Z;X");
 			//entry number 2 (arrival)
-			flightDetail.add(1, "LH592;1;LH;Lufthansa;A380;FRA;TK;2018-10-30;2018-10-30T01:00:00Z;T1;5;2018-10-30T02:00:00Z;X");
+			flightDetail.add(1, "LH592;1;LH;Lufthansa;A380;FRA;TK;2018-10-30;2018-10-30T01:00:00Z;T1;5;2018-10-30T02:00:00Z;2018-10-30T02:00:00Z;T2;5;2018-10-30T02:00:00Z;T1;3;2018-10-30T02:00:00Z;2018-10-30T02:00:00Z;X");
 			//return initilaized list of flights
 			return(flightDetail);
 }

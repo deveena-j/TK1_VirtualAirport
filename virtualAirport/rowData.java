@@ -190,6 +190,9 @@ public class rowData extends JFrame {
 		comboBox.addItem("Y");
 		comboBox.addItem("Z");
 		
+		//for flight status
+		String comboinput = comboBox.getEditor().getItem().toString();
+		
 		lblFlightStatus = new JLabel("Flight Status");
 		lblFlightStatus.setBackground(new Color(204, 204, 204));
 		lblFlightStatus.setForeground(new Color(204, 0, 51));
@@ -218,7 +221,33 @@ public class rowData extends JFrame {
 				//arrival airport
 				values = values + textField_13.getText() + ";";
 				//origin date
-				values = values + textField_3.getText();
+				values = values + textField_3.getText() + ";";
+				//scheduled arrival
+				values = values + textField_14.getText() + ";";
+				//arrival terminal
+				values = values + textField_15.getText() + ";";
+				//arrival gate
+				values = values + textField_16.getText() + ";";
+				//estimated arrival
+				values = values + textField_17.getText() + ";";
+				//scheduled departure
+				values = values + textField_14.getText() + ";";	
+				//departure terminal
+				values = values + textField_5.getText() + ";";
+				//departure gate
+				values = values + textField_18.getText() + ";";
+				//estimated departure
+				values = values + textField_9.getText() + ";";
+				//check in location
+				values = values + textField_10.getText() + ";";
+				//check in counter
+				values = values + textField_11.getText() + ";";
+				//check in start
+				values = values + textField_12.getText() + ";";
+				//check in end
+				values = values + textField_18.getText() + ";";
+				//fight status
+				values = values + comboinput;
 				
 				//calling the add flight function
 				try{
