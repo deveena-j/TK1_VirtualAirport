@@ -1,17 +1,19 @@
 package virtualAirport;
 
 
+import java.awt.EventQueue;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-
+import virtualAirport.loginPage;
 import virtualAirport.ObjectInterfaceClient;
+import virtualAirport.ClientGUI;
 
 import javax.swing.*;
 
-public class Client extends UnicastRemoteObject implements ObjectInterfaceClient {
+public class Client extends UnicastRemoteObject implements ObjectInterfaceClient{
 	
 	//mandatory default serialization ID
 	private static final long serialVersionUID = 1L;
@@ -29,10 +31,13 @@ public class Client extends UnicastRemoteObject implements ObjectInterfaceClient
 	}
 	
 	
+	
 	/*implementation of callback method to distribute updated flight list*/
 	
-	public ArrayList<String> receiveUpdatedFlightList(ArrayList<String> uptlist) {
-		return uptlist;
+	public void receiveUpdatedFlightList(ArrayList<String> uptlist) {
+		System.out.println("Reached");
+		ClientGUI newcall = new ClientGUI("User");
+		newcall.setVisible(true);
 	}
 
 	
@@ -50,16 +55,25 @@ public class Client extends UnicastRemoteObject implements ObjectInterfaceClient
             /*declaring client interface object*/
             ObjectInterfaceClient newclient = new Client();
             
-	String txt = JOptionPane.showInputDialog("Please enter your name");
-	/*Login method called on the server
-	 * Username will not be passed. It will instead be displayed on the client-side
-	 */
+            
+       //calling the loginPage.java page
+            EventQueue.invokeLater(new Runnable() {
+    			public void run() {
+    				try {
+    					loginPage frame = new loginPage();
+    					frame.setVisible(true);
+    					String txt = frame.doLoginPage();
+    					System.out.println(txt);
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		});
+
+      
+     
 	
-	/*Assigning user input to global username
-	 * 
-	 */
 	
-	globalusername = txt;
 	stub.login(newclient);
 	
 	/*stub.addFlight(flightdetail);

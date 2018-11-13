@@ -11,6 +11,7 @@ import virtualAirport.ObjectInterfaceClient;
 
 
 
+
 public class Server implements ObjectInterfaceServer, Serializable {
 	
 	//ArrayList for constructor initilization
@@ -39,6 +40,9 @@ public void flightDetails() throws RemoteException{
 	
 	for(int i=0; i<clientList.size(); i++) {
 		try {
+			
+			//debug
+			System.out.println("Hello");
 		ObjectInterfaceClient listclient = (ObjectInterfaceClient)clientList.elementAt(i);
 		listclient.receiveUpdatedFlightList(flightlist);
 		}catch (RemoteException ex) {
@@ -49,6 +53,10 @@ public void flightDetails() throws RemoteException{
 		}
 
 	}
+
+public ArrayList<String> justCall() {
+	return flightlist;
+}
 
 public static ArrayList<String> initializeFlights() {
 	
@@ -75,7 +83,6 @@ public void deleteFlight(String flnum) throws RemoteException {
 		values = flightlist.get(i).split(";");
 		if (flnum.equals(values[0])) {
 			flightlist.remove(i);
-			stringreturn = "Modification Successful";
 		}
 		
 	}
@@ -85,35 +92,14 @@ public void deleteFlight(String flnum) throws RemoteException {
 	
 }
 
-public void updateFlight(ArrayList<String> changes, String flightnum) throws RemoteException {
+public void updateFlight(String changes, int position, String flightnum) throws RemoteException {
 	//takes as input a list of changes. Each change is a string consisting of three values.
 	//separated by a semi-colon. First value - Flight code. Second value - updated field value
 	//Third value is the position of the field in the string
+
 	
-	String[] updatevalues_1 = null;
-	String[] updatevalues_2 = null;
-	String updatefinal = "";
-	//flightlist contains current list of flights
-	//nested for loops to make the changes
-	for(int i=0; i<flightlist.size(); i++) {
-		updatevalues_1 = flightlist.get(i).split(";");
-		if(flightnum.equals(updatevalues_1[0])) {
-			//if the flightnumber is matched, then perform update on this list entry
-			for(int j=0; j<changes.size(); j++) {
-				updatevalues_2 = changes.get(j).split(";");}
-				//first value will contain the updated field value
-				//second value will the index position within the flight list entry
-				updatevalues_1[Integer.parseInt(updatevalues_2[0])] = updatevalues_2[1];
-				//convert the array back to string
-				for(int k=0; k<updatevalues_1.length; k++) {
-					updatefinal = updatefinal + updatevalues_1[0] + ";" ;
-				}
-				//adding updated string back to list
-				//substring function used to remove the last ';' character
-				flightlist.add(i, updatefinal.substring(0, updatefinal.length() - 1));
-				
-			}
-		}
+	//adding changed string at the appropriate position in the list array
+	flightlist.set(position, changes);
 	
 	/*distribute updated flight list to all clients*/
 	flightDetails();
@@ -123,8 +109,9 @@ public void updateFlight(ArrayList<String> changes, String flightnum) throws Rem
 
 public void addFlight(String flightdetail) throws RemoteException {
 	//this method enables user to add flight with details. Accepts String as input
+	System.out.println(flightdetail);
 	flightlist.add(flightdetail);
-	stringreturn = "Flight added successfully";
+	
 	
 	/*distribute updated flight list to all clients
 	 */

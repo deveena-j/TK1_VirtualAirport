@@ -13,6 +13,6 @@ public interface ObjectInterfaceClient extends Remote {
 	
 	void testDistribute(String test) throws RemoteException;
 	
-	ArrayList<String> receiveUpdatedFlightList(ArrayList<String> uptlist) throws RemoteException;
+	void receiveUpdatedFlightList(ArrayList<String> uptlist) throws RemoteException;
 }
 

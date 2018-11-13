@@ -12,11 +12,13 @@ public interface ObjectInterfaceServer extends Remote{
 		//add flight method
 		void addFlight(String flightdetail) throws RemoteException;
 		//update flight method
-		void updateFlight(ArrayList<String> changes, String flightnum) throws RemoteException;
+		void updateFlight(String changes, int position, String flightnum) throws RemoteException;
 		//delete flight method
 		void deleteFlight(String flnum) throws RemoteException;
 		//receive list of flights method
 		void flightDetails() throws RemoteException;
+		//just returns a list of flights
+		ArrayList<String> justCall() throws RemoteException;
 
 
 }
